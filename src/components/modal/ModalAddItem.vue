@@ -39,7 +39,7 @@
                     isPlanet: this.isPlanet,
                     id: this.nameObject,
                 });
-                this.$store.commit('main/SET_FLAG_STATUS', ['isModalOpen', false]);
+                this.$store.commit('main/SET_FLAG_STATUS', ['isModalAdd', false]);
                 this.$store.commit('main/SET_DATA', this.data)
             }
         },

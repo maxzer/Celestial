@@ -1,32 +1,91 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div v-if="flags.isDataLoaded" :class="$style.container" id="app">
+    <div :class="$style.wrapper">
+      <h1>Celestial</h1>
+      <button @click="openModal()"
+      >
+        add celestial item
+      </button>
     </div>
-    <router-view/>
+
+    <Card v-for="item in currentPageObject"
+          :item="item"
+          :key="item.id"
+          @currentItem="currentItem = $event"
+    />
+    <Pagination/>
+
+    <ModalRemove v-if="flags.isModalRemove"
+                 :currentItem="currentItem"
+    />
+
+    <ModalAddItem v-if="flags.isModalAdd"/>
+
+    <modalChange v-if="flags.isModalChange"
+                 :currentItem="currentItem"
+    />
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+    import {mapActions, mapGetters} from 'vuex';
+    import Card from './components/Card'
+    import Pagination from './components/Pagination'
+    import ModalRemove from "./components/modal/ModalRemove";
+    import ModalAddItem from "./components/modal/ModalAddItem";
+    import ModalChange from "./components/modal/ModalChange";
 
-#nav {
-  padding: 30px;
+    export default {
+        name: 'app',
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+        components: {
+            ModalChange,
+            ModalAddItem,
+            ModalRemove,
+            Pagination,
+            Card
+        },
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+        data() {
+            return {
+                currentItem: null,
+            }
+        },
+
+        async created() {
+            this.fetchData();
+        },
+
+        computed: {
+            ...mapGetters('main', {
+                flags: 'getFlags',
+                currentPageObject: 'getVisibleObject'
+            }),
+        },
+
+        methods: {
+            ...mapActions('main', ['fetchData']),
+
+            openModal() {
+                this.$store.commit('main/SET_FLAG_STATUS', ['isModalAdd', true]);
+            }
+        },
+    };
+</script>
+
+<style lang="scss" module>
+  .container {
+    max-width: 1280px;
+    margin: auto;
   }
-}
+
+  .wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  button {
+    cursor: pointer;
+  }
 </style>

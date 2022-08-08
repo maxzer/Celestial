@@ -34,13 +34,13 @@
 
         methods: {
             refuse() {
-                this.$store.commit('main/SET_FLAG_STATUS', ['isModalOpen', false]);
+                this.$store.commit('main/SET_FLAG_STATUS', ['isModalRemove', false]);
             },
 
             removeBody() {
                 let data = this.data.filter(item => item.id !== this.currentItem.id);
                 this.$store.commit('main/SET_DATA', data);
-                this.$store.commit('main/SET_FLAG_STATUS', ['isModalOpen', false]);
+                this.$store.commit('main/SET_FLAG_STATUS', ['isModalRemove', false]);
                 this.$store.commit('main/SET_DELETE_OBJECT', this.currentItem);
             }
         },

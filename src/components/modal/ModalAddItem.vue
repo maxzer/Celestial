@@ -40,13 +40,15 @@
                     id: this.nameObject,
                 });
                 this.$store.commit('main/SET_FLAG_STATUS', ['isModalAdd', false]);
-                this.$store.commit('main/SET_VISIBLE_DATA', this.data)
+                if (this.findData.length) this.$store.commit('main/SET_VISIBLE_DATA', this.findData);
+                else this.$store.commit('main/SET_VISIBLE_DATA', this.data)
             }
         },
 
         computed: {
             ...mapGetters('main', {
                 data: 'getData',
+                findData: 'getFindData'
             }),
         },
     }

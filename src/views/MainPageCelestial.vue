@@ -10,6 +10,10 @@
           show object
         </button>
       </div>
+      <button @click="sort()"
+      >
+        sort name
+      </button>
       <button @click="openModal()"
       >
         add celestial item
@@ -59,6 +63,7 @@
             return {
                 currentItem: null,
                 name: '',
+                sortByName: false,
             }
         },
 
@@ -81,7 +86,20 @@
                 let findObject = this.data.filter(item => item.englishName.includes(this.name));
                 this.$store.commit('main/SET_FIND_DATA', findObject);
                 this.$store.commit('main/SET_VISIBLE_DATA', findObject)
+            },
+
+            sort() {
+                const result = [...this.data].sort((a, b) => (a.discoveredBy > b.discoveredBy) ? 1 : -1);
+
+                if (this.sortByName) {
+                    this.$store.commit('main/SET_VISIBLE_DATA', this.data);
+                    this.sortByName = false;
+                } else {
+                    this.$store.commit('main/SET_VISIBLE_DATA', result);
+                    this.sortByName = true;
+                }
             }
+
         },
     };
 </script>

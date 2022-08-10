@@ -39,7 +39,16 @@
 
             removeBody() {
                 let data = this.data.filter(item => item.id !== this.currentItem.id);
-                this.$store.commit('main/SET_VISIBLE_DATA', data);
+
+                if (this.findData.length) {
+                    let findDate = this.findData.filter(item => item.id !== this.currentItem.id);
+                    this.$store.commit('main/SET_DATA', data);
+                    this.$store.commit('main/SET_VISIBLE_DATA', findDate);
+                    this.$store.commit('main/SET_FIND_DATA', findDate);
+                } else {
+                    this.$store.commit('main/SET_VISIBLE_DATA', data);
+                }
+
                 this.$store.commit('main/SET_FLAG_STATUS', ['isModalRemove', false]);
                 this.$store.commit('main/SET_DELETE_OBJECT', this.currentItem);
             }
@@ -48,7 +57,9 @@
         computed: {
             ...mapGetters('main', {
                 data: 'getData',
-                currentPage: 'getCurrentPage'
+                currentPage: 'getCurrentPage',
+                findData: 'getFindData'
+
             }),
         },
     }

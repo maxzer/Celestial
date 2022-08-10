@@ -30,16 +30,17 @@
 
         data() {
             return {
-                name: null,
-                date: null,
-                nameObject: null,
-                isPlanet: null
+                name: '',
+                date: '',
+                nameObject: '',
+                isPlanet: ''
             }
         },
 
         methods: {
             changeObject() {
                 let currentIndex = this.data.findIndex(item => item.id === this.currentItem.id);
+
                 this.$store.commit('main/SET_ITEM_BY_INDEX', [currentIndex, {
                     discoveredBy: this.name,
                     discoveryDate: this.date,
@@ -47,6 +48,12 @@
                     isPlanet: this.isPlanet,
                     id: this.nameObject ? this.nameObject : currentIndex
                 }]);
+
+                if (this.findData.length) {
+                    this.$store.commit('main/SET_VISIBLE_DATA', this.findData);
+                }
+                else this.$store.commit('main/SET_VISIBLE_DATA', this.data);
+
                 this.$store.commit('main/SET_FLAG_STATUS', ['isModalChange', false]);
             }
         },
@@ -54,6 +61,7 @@
         computed: {
             ...mapGetters('main', {
                 data: 'getData',
+                findData: 'getFindData'
             }),
         },
     }

@@ -15,7 +15,7 @@ export const main = {
         totalPage: null,
         visibleData: null,
         deleteObject: [],
-        findData: null
+        findData: []
     },
 
     getters: {
@@ -90,7 +90,6 @@ export const main = {
 
         SET_ITEM_BY_INDEX(state, [index, value]) {
             state.data[index] = value;
-            state.visibleData = state.data.slice((state.currentPage - 1) * state.pageSize, state.pageSize * state.currentPage);
         },
 
         SET_FLAG_STATUS(state, [flag, status]) {

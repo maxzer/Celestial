@@ -32,21 +32,24 @@
             setPage(target) {
                 this.page = +target.innerText;
                 this.$store.commit('main/SET_CURRENT_PAGE', this.page);
-                this.$store.commit('main/SET_DATA', this.data);
+                if (this.findData.length) this.$store.commit('main/SET_VISIBLE_DATA', this.findData);
+                else this.$store.commit('main/SET_VISIBLE_DATA', this.data);
 
             },
 
             next() {
                 if (this.currentPage > this.totalPage) {
                     this.$store.commit('main/SET_CURRENT_PAGE', this.currentPage + 1);
-                    this.$store.commit('main/SET_DATA', this.data);
+                    if (this.findData.length) this.$store.commit('main/SET_VISIBLE_DATA', this.findData);
+                    else this.$store.commit('main/SET_VISIBLE_DATA', this.data);
                 }
             },
 
             prev() {
                 if (this.currentPage > 1) {
                     this.$store.commit('main/SET_CURRENT_PAGE', this.currentPage - 1);
-                    this.$store.commit('main/SET_DATA', this.data);
+                    if (this.findData.length) this.$store.commit('main/SET_VISIBLE_DATA', this.findData);
+                    else this.$store.commit('main/SET_VISIBLE_DATA', this.data);
                 }
             }
         },
@@ -55,7 +58,8 @@
             ...mapGetters('main', {
                 totalPage: 'getTotalPage',
                 currentPage: 'getCurrentPage',
-                data: 'getData'
+                data: 'getData',
+                findData: 'getFindData'
             }),
         },
     }

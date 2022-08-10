@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.card">
+  <div :class="$style.card" @click.self="$router.push({ name: 'DetailCard', params: {id: item.id} })">
     <div :class="$style.information">
       <div>
         Open: {{ item.discoveredBy }}
@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <div :class="$style.wrapper">
+    <div v-if="visibleNavigation" :class="$style.wrapper">
       <button :class="$style.remove"
               @click="remove(item)"
       >
@@ -38,19 +38,24 @@
             item: {
                 type: Object,
                 default: () => ({})
+            },
+
+            visibleNavigation: {
+                type: Boolean,
+                default: false
             }
         },
 
         methods: {
-            remove(currentItem) {
+            remove() {
                 this.$store.commit('main/SET_FLAG_STATUS', ['isModalRemove', true]);
-                this.$emit('currentItem', currentItem)
+                this.$emit('currentItem', this.item)
             },
 
-            change(currentItem) {
+            change() {
                 this.$store.commit('main/SET_FLAG_STATUS', ['isModalChange', true]);
-                this.$emit('currentItem', currentItem)
-            }
+                this.$emit('currentItem', this.item)
+            },
         }
     }
 </script>
@@ -63,6 +68,13 @@
     padding: 8px;
     display: flex;
     justify-content: space-between;
+    transition: all .3s ease;
+    position: relative;
+
+    &:hover {
+      transform: translate(0, -5px);
+      cursor: pointer;
+    }
   }
 
   .information {
@@ -81,5 +93,12 @@
 
   .change {
     margin-right: 12px;
+  }
+
+  .routeLink {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: red;
   }
 </style>

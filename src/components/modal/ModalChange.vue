@@ -5,7 +5,7 @@
         <h2>Change celestial body</h2>
         <input v-model="name" placeholder="Your name">
         <input v-model="date" placeholder="Date">
-        <input required v-model="nameObject" placeholder="Name object">
+        <input v-model="nameObject" placeholder="Name object">
         <input v-model="isPlanet" placeholder="Is planet?">
         <button @click="changeObject()">
           add object

@@ -1,0 +1,112 @@
+<template>
+  <div v-if="flags.isDataLoaded" :class="$style.container" id="app">
+    <router-link :to="{name: 'DeletedObject'}">view deleted objects</router-link>
+    <div :class="$style.wrapper">
+      <h1>Celestial</h1>
+      <div :class="$style.findBlock">
+        <input v-model="name" placeholder="Enter object name">
+        <button @click="findObject()"
+        >
+          show object
+        </button>
+      </div>
+      <button @click="openModal()"
+      >
+        add celestial item
+      </button>
+    </div>
+
+    <Card v-for="item in currentPageObject"
+          :item="item"
+          :visible-navigation="true"
+          :key="item.id"
+          @currentItem="currentItem = $event"
+    />
+    <Pagination/>
+
+    <ModalRemove v-if="flags.isModalRemove"
+                 :currentItem="currentItem"
+    />
+
+    <ModalAddItem v-if="flags.isModalAdd"/>
+
+    <modalChange v-if="flags.isModalChange"
+                 :currentItem="currentItem"
+    />
+  </div>
+</template>
+
+<script>
+    import {mapGetters} from 'vuex';
+    import Card from '../components/Card'
+    import Pagination from '../components/Pagination'
+    import ModalRemove from "../components/modal/ModalRemove";
+    import ModalAddItem from "../components/modal/ModalAddItem";
+    import ModalChange from "../components/modal/ModalChange";
+
+    export default {
+        name: 'app',
+
+        components: {
+            ModalChange,
+            ModalAddItem,
+            ModalRemove,
+            Pagination,
+            Card
+        },
+
+        data() {
+            return {
+                currentItem: null,
+                name: '',
+            }
+        },
+
+        computed: {
+            ...mapGetters('main', {
+                flags: 'getFlags',
+                currentPageObject: 'getVisibleObject',
+                data: 'getData'
+            }),
+        },
+
+        methods: {
+            openModal() {
+                this.$store.commit('main/SET_FLAG_STATUS', ['isModalAdd', true]);
+            },
+
+            findObject() {
+                if (this.name.length === 0) this.$store.commit('main/SET_VISIBLE_DATA', this.data);
+
+                let findObject = this.data.filter(item => item.englishName.includes(this.name));
+                this.$store.commit('main/SET_FIND_DATA', findObject);
+                this.$store.commit('main/SET_VISIBLE_DATA', findObject)
+            }
+        },
+    };
+</script>
+
+<style lang="scss" module>
+  .container {
+    max-width: 1280px;
+    margin: auto;
+  }
+
+  .wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  .findBlock {
+    display: block;
+
+    input {
+      margin-right: 8px;
+    }
+  }
+</style>

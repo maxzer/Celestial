@@ -4,7 +4,6 @@ export const main = {
     namespaced: true,
     state: {
         flags: {
-            isPageLoaded: false,
             isDataLoaded: false,
             isModalRemove: false,
             isModalAdd: false,
@@ -16,6 +15,7 @@ export const main = {
         totalPage: null,
         visibleData: null,
         deleteObject: [],
+        findData: null
     },
 
     getters: {
@@ -25,6 +25,14 @@ export const main = {
 
         getFlags(state) {
             return state.flags;
+        },
+
+        getFindData(state) {
+            return state.findData;
+        },
+
+        getDeleteObject(state) {
+           return state.deleteObject;
         },
 
         getCurrentPage(state) {
@@ -45,19 +53,8 @@ export const main = {
             try {
                 const { data } = await axios.get('https://api.le-systeme-solaire.net/rest/bodies/');
 
-                let sortData = data.bodies.map(elem => {
-                    const {discoveredBy, discoveryDate, englishName, isPlanet, id} = elem;
-
-                    return {
-                        discoveredBy: discoveredBy || 'Humanity',
-                        discoveryDate: discoveryDate || 'Humanity',
-                        englishName: englishName || 'Humanity',
-                        isPlanet: isPlanet ? 'yes' : 'no',
-                        id
-                    }
-                });
-
-                commit('SET_DATA', sortData);
+                commit('SET_DATA', data.bodies);
+                commit('SET_VISIBLE_DATA', data.bodies);
                 commit('SET_FLAG_STATUS', ['isDataLoaded', true]);
             } catch (e) {
                 console.log('[Error] [store/main/fetchData]: ', e);
@@ -68,8 +65,15 @@ export const main = {
     mutations: {
         SET_DATA(state, payload) {
             state.data = payload;
+        },
+
+        SET_VISIBLE_DATA(state, payload) {
             state.visibleData = payload.slice((state.currentPage - 1) * state.pageSize, state.pageSize * state.currentPage);
             state.totalPage = Math.ceil(payload.length / state.pageSize);
+        },
+
+        SET_FIND_DATA(state, payload) {
+            state.findData = payload
         },
 
         SET_DELETE_OBJECT(state, payload) {
@@ -82,14 +86,6 @@ export const main = {
 
         SET_CURRENT_PAGE(state, payload) {
             state.currentPage = payload;
-        },
-
-        SET_DATA_PAGE(state, [data, page]) {
-            state.visibleData = data.slice((page - 1) * state.pageSize, state.pageSize * page);
-        },
-
-        SET_TOTAL_PAGE(state, payload) {
-            state.totalPage = payload;
         },
 
         SET_ITEM_BY_INDEX(state, [index, value]) {

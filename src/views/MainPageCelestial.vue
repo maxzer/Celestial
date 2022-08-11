@@ -20,7 +20,7 @@
       </button>
     </div>
 
-    <Card v-for="item in currentPageObject"
+    <Card v-for="item in visibleData"
           :item="item"
           :visible-navigation="true"
           :key="item.id"
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import {mapMutations, mapState} from 'vuex';
     import Card from '../components/Card'
     import Pagination from '../components/Pagination'
     import ModalRemove from "../components/modal/ModalRemove";
@@ -68,34 +68,40 @@
         },
 
         computed: {
-            ...mapGetters('main', {
-                flags: 'getFlags',
-                currentPageObject: 'getVisibleObject',
-                data: 'getData'
-            }),
+            ...mapState('main', [
+                'flags',
+                'visibleData',
+                'data'
+            ]),
         },
 
         methods: {
+            ...mapMutations('main', {
+                setFlag: 'SET_FLAG_STATUS',
+                setVisibleData: 'SET_VISIBLE_DATA',
+                setFindData: 'SET_FIND_DATA',
+            }),
+
             openModal() {
-                this.$store.commit('main/SET_FLAG_STATUS', ['isModalAdd', true]);
+                this.setFlag(['isModalAdd', true]);
             },
 
             findObject() {
-                if (this.name.length === 0) this.$store.commit('main/SET_VISIBLE_DATA', this.data);
+                if (this.name.length === 0) this.setVisibleData(this.data);
 
                 let findObject = this.data.filter(item => item.englishName.includes(this.name));
-                this.$store.commit('main/SET_FIND_DATA', findObject);
-                this.$store.commit('main/SET_VISIBLE_DATA', findObject)
+                this.setFindData(findObject);
+                this.setVisibleData(findObject)
             },
 
             sort() {
                 const result = [...this.data].sort((a, b) => (a.discoveredBy > b.discoveredBy) ? 1 : -1);
 
                 if (this.sortByName) {
-                    this.$store.commit('main/SET_VISIBLE_DATA', this.data);
+                    this.setVisibleData(this.data);
                     this.sortByName = false;
                 } else {
-                    this.$store.commit('main/SET_VISIBLE_DATA', result);
+                    this.setVisibleData(result);
                     this.sortByName = true;
                 }
             }

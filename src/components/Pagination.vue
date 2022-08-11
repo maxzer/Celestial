@@ -3,12 +3,12 @@
     <button @click="prev()">
       prev
     </button>
-    <div v-for="number in totalPage"
-         :key="number"
+    <div v-for="currentPage in totalPage"
+         :key="currentPage"
          :class="$style.page"
-         @click="setPage($event.target)"
+         @click="setPage(currentPage)"
     >
-      {{number}}
+      {{currentPage}}
     </div>
     <button @click="next()">
       next
@@ -17,50 +17,48 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import {mapMutations, mapState} from 'vuex';
 
     export default {
         name: "Pagination",
 
-        data() {
-            return {
-                page: null
-            }
-        },
-
         methods: {
-            setPage(target) {
-                this.page = +target.innerText;
-                this.$store.commit('main/SET_CURRENT_PAGE', this.page);
-                if (this.findData.length) this.$store.commit('main/SET_VISIBLE_DATA', this.findData);
-                else this.$store.commit('main/SET_VISIBLE_DATA', this.data);
+            ...mapMutations('main', {
+                setCurrentPage: 'SET_CURRENT_PAGE',
+                setVisibleData: 'SET_VISIBLE_DATA',
+            }),
+
+            setPage(currentPage) {
+                this.setCurrentPage(currentPage);
+                if (this.findData.length) this.setVisibleData(this.findData);
+                else this.setVisibleData(this.data);
 
             },
 
             next() {
                 if (this.currentPage > this.totalPage) {
-                    this.$store.commit('main/SET_CURRENT_PAGE', this.currentPage + 1);
-                    if (this.findData.length) this.$store.commit('main/SET_VISIBLE_DATA', this.findData);
-                    else this.$store.commit('main/SET_VISIBLE_DATA', this.data);
+                    this.setCurrentPage(this.currentPage + 1);
+                    if (this.findData.length) this.setVisibleData(this.findData);
+                    else this.setVisibleData(this.data);
                 }
             },
 
             prev() {
                 if (this.currentPage > 1) {
-                    this.$store.commit('main/SET_CURRENT_PAGE', this.currentPage - 1);
-                    if (this.findData.length) this.$store.commit('main/SET_VISIBLE_DATA', this.findData);
-                    else this.$store.commit('main/SET_VISIBLE_DATA', this.data);
+                    this.setCurrentPage(this.currentPage - 1);
+                    if (this.findData.length) this.setVisibleData(this.findData);
+                    else this.setVisibleData(this.data);
                 }
             }
         },
 
         computed: {
-            ...mapGetters('main', {
-                totalPage: 'getTotalPage',
-                currentPage: 'getCurrentPage',
-                data: 'getData',
-                findData: 'getFindData'
-            }),
+            ...mapState('main', [
+                'totalPage',
+                'currentPage',
+                'data',
+                'findData'
+            ]),
         },
     }
 </script>

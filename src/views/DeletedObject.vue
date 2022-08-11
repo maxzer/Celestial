@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import {mapState} from 'vuex';
     import Card from '../components/Card'
 
     export default {
@@ -29,9 +29,10 @@
         },
 
         computed: {
-            ...mapGetters('main', {
-                deleteObject: 'getDeleteObject'
-            }),
+            ...mapState('main', [
+                'deleteObject',
+            ]),
+
         },
     };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.card" @click.self="$router.push({ name: 'DetailCard', params: {id: item.id} })">
+  <div :class="$style.card" @click.self="openDetaiPage()">
     <div :class="$style.information">
       <div>
         Open: {{ item.discoveredBy }}
@@ -31,6 +31,8 @@
 </template>
 
 <script>
+    import {mapMutations} from 'vuex';
+
     export default {
         name: "Card",
 
@@ -47,15 +49,23 @@
         },
 
         methods: {
+            ...mapMutations('main', {
+                setFlag: 'SET_FLAG_STATUS',
+            }),
+
             remove() {
-                this.$store.commit('main/SET_FLAG_STATUS', ['isModalRemove', true]);
+                this.setFlag(['isModalRemove', true]);
                 this.$emit('currentItem', this.item)
             },
 
             change() {
-                this.$store.commit('main/SET_FLAG_STATUS', ['isModalChange', true]);
+                this.setFlag(['isModalChange', true]);
                 this.$emit('currentItem', this.item)
             },
+
+            openDetaiPage() {
+                this.$router.push({name: 'DetailCard', params: {id: this.item.id}})
+            }
         }
     }
 </script>

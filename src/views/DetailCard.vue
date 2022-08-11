@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import {mapState} from 'vuex';
 
     export default {
         name: "DetailCard",
@@ -17,17 +17,17 @@
             }
         },
 
-
         computed: {
-            ...mapGetters('main', {
-                data: 'getData',
-                deleteObject: 'getDeleteObject'
-            }),
+            ...mapState('main', [
+                'deleteObject',
+                'data'
+            ]),
 
             detailInformation() {
-                let notDeletdata = this.data.filter(item => item.id === this.id)[0];
+                let notDeletdata = this.data.find(item => item.id === this.id);
                 if (notDeletdata) return notDeletdata;
-                return this.deleteObject.filter(item => item.id === this.id)[0];
+
+                return this.deleteObject.find(item => item.id === this.id);
             }
         }
     }

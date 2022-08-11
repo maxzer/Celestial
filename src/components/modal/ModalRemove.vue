@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import {mapMutations, mapState} from 'vuex';
 
     export default {
         name: "Modal",
@@ -33,8 +33,16 @@
         },
 
         methods: {
+            ...mapMutations('main', {
+                setFlag: 'SET_FLAG_STATUS',
+                setData: 'SET_DATA',
+                setVisibleData: 'SET_VISIBLE_DATA',
+                setFindData: 'SET_FIND_DATA',
+                setDeleteObject: 'SET_DELETE_OBJECT'
+            }),
+
             refuse() {
-                this.$store.commit('main/SET_FLAG_STATUS', ['isModalRemove', false]);
+                this.setFlag(['isModalRemove', false]);
             },
 
             removeBody() {
@@ -42,25 +50,24 @@
 
                 if (this.findData.length) {
                     let findDate = this.findData.filter(item => item.id !== this.currentItem.id);
-                    this.$store.commit('main/SET_DATA', data);
-                    this.$store.commit('main/SET_VISIBLE_DATA', findDate);
-                    this.$store.commit('main/SET_FIND_DATA', findDate);
+                    this.setData(data);
+                    this.setVisibleData(findDate);
+                    this.setFindData(findDate);
                 } else {
-                    this.$store.commit('main/SET_VISIBLE_DATA', data);
+                    this.setVisibleData(data);
                 }
 
-                this.$store.commit('main/SET_FLAG_STATUS', ['isModalRemove', false]);
-                this.$store.commit('main/SET_DELETE_OBJECT', this.currentItem);
+                this.setFlag(['isModalRemove', false]);
+                this.setDeleteObject(this.currentItem);
             }
         },
 
         computed: {
-            ...mapGetters('main', {
-                data: 'getData',
-                currentPage: 'getCurrentPage',
-                findData: 'getFindData'
-
-            }),
+            ...mapState('main', [
+                'currentPage',
+                'data',
+                'findData'
+            ]),
         },
     }
 </script>

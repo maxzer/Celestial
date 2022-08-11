@@ -16,7 +16,7 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import {mapState, mapMutations} from 'vuex';
 
     export default {
         name: "ModalAddItem",
@@ -31,25 +31,31 @@
         },
 
         methods: {
+            ...mapMutations('main', {
+                setAddObject: 'SET_ADD_OBJECT',
+                setVisibleData: 'SET_VISIBLE_DATA',
+                setFlag: 'SET_FLAG_STATUS',
+            }),
+
             addObject() {
-                this.$store.commit('main/SET_ADD_OBJECT', {
+                this.setAddObject({
                     discoveredBy: this.name,
                     discoveryDate: this.date,
                     englishName: this.nameObject,
                     isPlanet: this.isPlanet,
                     id: this.nameObject,
                 });
-                this.$store.commit('main/SET_FLAG_STATUS', ['isModalAdd', false]);
-                if (this.findData.length) this.$store.commit('main/SET_VISIBLE_DATA', this.findData);
-                else this.$store.commit('main/SET_VISIBLE_DATA', this.data)
+                this.setFlag(['isModalAdd', false]);
+                if (this.findData.length) this.setVisibleData(this.findData);
+                else this.setVisibleData(this.data)
             }
         },
 
         computed: {
-            ...mapGetters('main', {
-                data: 'getData',
-                findData: 'getFindData'
-            }),
+            ...mapState('main', [
+                'data',
+                'findData'
+            ]),
         },
     }
 </script>

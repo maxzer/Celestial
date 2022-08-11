@@ -16,7 +16,7 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import {mapMutations, mapState} from 'vuex';
 
     export default {
         name: "ModalChange",
@@ -38,10 +38,17 @@
         },
 
         methods: {
+            ...mapMutations('main', {
+                setVisibleData: 'SET_VISIBLE_DATA',
+                setFlag: 'SET_FLAG_STATUS',
+                setItemByIndex: 'SET_ITEM_BY_INDEX'
+
+            }),
+
             changeObject() {
                 let currentIndex = this.data.findIndex(item => item.id === this.currentItem.id);
 
-                this.$store.commit('main/SET_ITEM_BY_INDEX', [currentIndex, {
+                this.setItemByIndex([currentIndex, {
                     discoveredBy: this.name,
                     discoveryDate: this.date,
                     englishName: this.nameObject,
@@ -50,19 +57,18 @@
                 }]);
 
                 if (this.findData.length) {
-                    this.$store.commit('main/SET_VISIBLE_DATA', this.findData);
-                }
-                else this.$store.commit('main/SET_VISIBLE_DATA', this.data);
+                    this.setVisibleData(this.findData);
+                } else this.setVisibleData(this.data);
 
-                this.$store.commit('main/SET_FLAG_STATUS', ['isModalChange', false]);
+                this.setFlag(['isModalChange', false]);
             }
         },
 
         computed: {
-            ...mapGetters('main', {
-                data: 'getData',
-                findData: 'getFindData'
-            }),
+            ...mapState('main', [
+                'data',
+                'findData'
+            ]),
         },
     }
 </script>

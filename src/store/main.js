@@ -18,36 +18,6 @@ export const main = {
         findData: []
     },
 
-    getters: {
-        getData(state) {
-            return state.data;
-        },
-
-        getFlags(state) {
-            return state.flags;
-        },
-
-        getFindData(state) {
-            return state.findData;
-        },
-
-        getDeleteObject(state) {
-           return state.deleteObject;
-        },
-
-        getCurrentPage(state) {
-           return state.currentPage;
-        },
-
-        getTotalPage(state) {
-            return state.totalPage;
-        },
-
-        getVisibleObject(state) {
-            return state.visibleData;
-        }
-    },
-
     actions: {
         async fetchData({commit}) {
             try {

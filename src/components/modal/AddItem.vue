@@ -2,12 +2,12 @@
   <div :class="$style.container">
     <div :class="$style.body">
       <div :class="$style.attention">
-        <h2>Change celestial body</h2>
+        <h2>Add celestial body</h2>
         <input v-model="name" placeholder="Your name">
         <input v-model="date" placeholder="Date">
         <input v-model="nameObject" placeholder="Name object">
         <input v-model="isPlanet" placeholder="Is planet?">
-        <button @click="changeObject()">
+        <button @click="addObject()">
           add object
         </button>
       </div>
@@ -16,51 +16,38 @@
 </template>
 
 <script>
-    import {mapMutations, mapState} from 'vuex';
+    import {mapState, mapMutations} from 'vuex';
 
     export default {
-        name: "ModalChange",
-
-        props: {
-            currentItem: {
-                type: Object,
-                default: () => ({}),
-            }
-        },
+        name: "AddItem",
 
         data() {
             return {
-                name: '',
-                date: '',
-                nameObject: '',
-                isPlanet: ''
+                name: null,
+                date: null,
+                nameObject: null,
+                isPlanet: null
             }
         },
 
         methods: {
             ...mapMutations({
+                setAddObject: 'SET_ADD_OBJECT',
                 setVisibleData: 'SET_VISIBLE_DATA',
                 setFlag: 'SET_FLAG_STATUS',
-                setItemByIndex: 'SET_ITEM_BY_INDEX'
-
             }),
 
-            changeObject() {
-                let currentIndex = this.data.findIndex(item => item.id === this.currentItem.id);
-
-                this.setItemByIndex([currentIndex, {
+            addObject() {
+                this.setAddObject({
                     discoveredBy: this.name,
                     discoveryDate: this.date,
                     englishName: this.nameObject,
                     isPlanet: this.isPlanet,
-                    id: this.nameObject ? this.nameObject : currentIndex
-                }]);
-
-                if (this.findData.length) {
-                    this.setVisibleData(this.findData);
-                } else this.setVisibleData(this.data);
-
-                this.setFlag(['isModalChange', false]);
+                    id: this.nameObject,
+                });
+                this.setFlag(['isModalAdd', false]);
+                if (this.findData.length) this.setVisibleData(this.findData);
+                else this.setVisibleData(this.data)
             }
         },
 

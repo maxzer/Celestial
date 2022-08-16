@@ -23,7 +23,7 @@
     import {mapMutations, mapState} from 'vuex';
 
     export default {
-        name: "Modal",
+        name: "Remove",
 
         props: {
             currentItem: {

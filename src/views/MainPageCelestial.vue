@@ -42,11 +42,11 @@
 
 <script>
     import {mapMutations, mapState} from 'vuex';
-    import Card from '../components/Card'
-    import Pagination from '../components/Pagination'
-    import ModalRemove from "../components/modal/ModalRemove";
-    import ModalAddItem from "../components/modal/ModalAddItem";
-    import ModalChange from "../components/modal/ModalChange";
+    import Card from '@/components/Card'
+    import Pagination from '@/components/Pagination'
+    import ModalRemove from "@/components/modal/Remove";
+    import ModalAddItem from "@/components/modal/AddItem";
+    import ModalChange from "@/components/modal/Change";
 
     export default {
         name: 'app',

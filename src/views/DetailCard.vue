@@ -18,7 +18,7 @@
         },
 
         computed: {
-            ...mapState('main', [
+            ...mapState([
                 'deleteObject',
                 'data'
             ]),

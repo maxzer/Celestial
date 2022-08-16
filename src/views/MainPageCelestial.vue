@@ -68,7 +68,7 @@
         },
 
         computed: {
-            ...mapState('main', [
+            ...mapState([
                 'flags',
                 'visibleData',
                 'data'
@@ -76,7 +76,7 @@
         },
 
         methods: {
-            ...mapMutations('main', {
+            ...mapMutations({
                 setFlag: 'SET_FLAG_STATUS',
                 setVisibleData: 'SET_VISIBLE_DATA',
                 setFindData: 'SET_FIND_DATA',

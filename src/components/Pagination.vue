@@ -23,7 +23,7 @@
         name: "Pagination",
 
         methods: {
-            ...mapMutations('main', {
+            ...mapMutations({
                 setCurrentPage: 'SET_CURRENT_PAGE',
                 setVisibleData: 'SET_VISIBLE_DATA',
             }),
@@ -53,7 +53,7 @@
         },
 
         computed: {
-            ...mapState('main', [
+            ...mapState([
                 'totalPage',
                 'currentPage',
                 'data',

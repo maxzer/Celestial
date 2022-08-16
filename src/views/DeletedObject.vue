@@ -29,7 +29,7 @@
         },
 
         computed: {
-            ...mapState('main', [
+            ...mapState([
                 'deleteObject',
             ]),
 

@@ -33,7 +33,7 @@
         },
 
         methods: {
-            ...mapMutations('main', {
+            ...mapMutations({
                 setFlag: 'SET_FLAG_STATUS',
                 setData: 'SET_DATA',
                 setVisibleData: 'SET_VISIBLE_DATA',
@@ -63,7 +63,7 @@
         },
 
         computed: {
-            ...mapState('main', [
+            ...mapState([
                 'currentPage',
                 'data',
                 'findData'

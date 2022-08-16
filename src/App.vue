@@ -15,7 +15,7 @@
         },
 
         methods: {
-            ...mapActions('main', ['fetchData']),
+            ...mapActions(['fetchData']),
         },
     }
 </script>

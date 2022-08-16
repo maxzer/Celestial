@@ -38,7 +38,7 @@
         },
 
         methods: {
-            ...mapMutations('main', {
+            ...mapMutations({
                 setVisibleData: 'SET_VISIBLE_DATA',
                 setFlag: 'SET_FLAG_STATUS',
                 setItemByIndex: 'SET_ITEM_BY_INDEX'
@@ -65,7 +65,7 @@
         },
 
         computed: {
-            ...mapState('main', [
+            ...mapState([
                 'data',
                 'findData'
             ]),

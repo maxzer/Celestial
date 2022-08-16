@@ -49,7 +49,7 @@
         },
 
         methods: {
-            ...mapMutations('main', {
+            ...mapMutations({
                 setFlag: 'SET_FLAG_STATUS',
             }),
 

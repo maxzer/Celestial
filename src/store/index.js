@@ -7,7 +7,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         flags: {
-            isDataLoaded: false,
             isModalRemove: false,
             isModalAdd: false,
             isModalChange: false
@@ -28,9 +27,8 @@ export default new Vuex.Store({
 
                 commit('SET_DATA', data.bodies);
                 commit('SET_VISIBLE_DATA', data.bodies);
-                commit('SET_FLAG_STATUS', ['isDataLoaded', true]);
             } catch (e) {
-                console.log('[Error] [store/main/fetchData]: ', e);
+                console.log('[Error] [store/fetchData]: ', e);
             }
         },
     },

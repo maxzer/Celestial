@@ -1,5 +1,5 @@
 <template>
-  <div v-if="flags.isDataLoaded" :class="$style.container" id="app">
+  <div v-if="data" :class="$style.container" id="app">
     <router-link :to="{name: 'DeletedObject'}">view deleted objects</router-link>
     <div :class="$style.wrapper">
       <h1>Celestial</h1>
@@ -111,6 +111,11 @@
 </script>
 
 <style lang="scss" module>
+
+  [v-cloak] {
+    display: none;
+  }
+
   .container {
     max-width: 1280px;
     margin: auto;

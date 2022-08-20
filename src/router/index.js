@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import MainPageCelestial from '@/views/MainPageCelestial.vue'
+import MainPageCelestial from '@/components/pages/MainPageCelestial.vue'
 
 Vue.use(VueRouter);
 
@@ -13,13 +13,13 @@ const routes = [
     {
         path: '/:id',
         name: 'DetailCard',
-        component: () => import('@/views/DetailCard.vue'),
+        component: () => import('@/components/pages/DetailCard.vue'),
         props: true
     },
     {
         path: '/deletepage',
         name: 'DeletedObject',
-        component: () => import('@/views/DeletedObject.vue'),
+        component: () => import('@/components/pages/DeletedObject.vue'),
     }
 ];
 
